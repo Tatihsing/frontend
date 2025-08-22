@@ -57,9 +57,8 @@ function getUserPosition(uid) {
     if (doc.exists) {
       window.currentPosition = doc.data().position;
       // 若有需要可在此根據角色執行其他操作
-    } else {
-      document.getElementById('main-section').innerHTML = '<p>找不到使用者角色，請聯絡管理員。</p>';
     }
+    // 未登入或查不到 profile 時，不覆蓋 main-section
   });
 }
 
