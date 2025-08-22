@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>請購系統 - 儀表板</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+</head>
+<body>
+        <div class="dashboard-container">
+            <div class="main-container">
+                <main class="main-content" style="margin:0 auto;">
+                    <div id="content-area">
+                        <!-- 主要內容區域 -->
+                        <div class="page-container">
+                            <div class="request-section">
+                                <div class="request-header">
+                                    <img src="LOGO.png" alt="請購系統" class="logo">
+                                    <h2>請購單</h2>
+                                </div>
+                                <form id="newRequestForm" class="request-form">
+                                    <div class="form-group">
+                                        <label>部門：</label>
+                                        <span id="department">研發</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="requesterName">請購人：<span class="required">*</span></label>
+                                        <input type="text" id="requesterName" required placeholder="請輸入姓名">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="category">類別：<span class="required">*</span></label>
+                                        <select id="category" required>
+                                            <option value="">請選擇類別</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="item">品項：<span class="required">*</span></label>
+                                        <select id="item" required disabled>
+                                            <option value="">請先選擇類別</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="specification">規格：<span class="required">*</span></label>
+                                        <select id="specification" required disabled>
+                                            <option value="">請先選擇品項</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-info">
+                                        <label>物品資訊：</label>
+                                        <div id="itemInfo">
+                                            <div>單位：<span id="unit">請先選擇品項</span></div>
+                                            <div>庫存：<span id="stock">-</span></div>
+                                            <div>安全庫存：<span id="safetyStock">-</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantity">數量：<span class="required">*</span></label>
+                                        <input type="number" id="quantity" min="1" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="note">備註：</label>
+                                        <textarea id="note"></textarea>
+                                    </div>
+                                    <button type="submit" class="submit-btn">送出請購單</button>
+                                </form>
+                                <!-- 請購紀錄框架 -->
+                                <div id="requestList" class="request-list" style="margin-top:32px;">
+                                    <!-- JS 會自動填入請購紀錄 -->
+                                </div>
+                            </div>
+                            <!-- 請購紀錄區塊可日後再補 -->
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    <script src="firebase-config.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>物品發放管理</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    .main-action-btn {
+      display: inline-block;
+      min-width: 70px;
+      height: 40px;
+      margin: 0 8px 0 0;
+      border-radius: 10px;
+      font-size: 1.15em;
+      font-weight: 600;
+      letter-spacing: 2px;
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+      cursor: pointer;
+      padding: 0 18px;
+      transition: background 0.2s, color 0.2s;
+      text-align: center;
+      color: #fff;
+    }
+    .main-action-btn.batch {
+      background: #43a047;
+    }
+    .main-action-btn.delete {
+      background: #d32f2f;
+    }
+    .main-action-btn.refresh {
+      background: #111;
+      color: #fff;
+    }
+    .main-action-btn:hover {
+      filter: brightness(0.92);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.16);
+    }
+    /* 手機版適應 */
+    @media (max-width: 600px) {
+      .dashboard-container, .main-container {
+        padding: 0 !important;
+      }
+      header {
+        flex-direction: column !important;
+        padding: 16px 8px 0 8px !important;
+      }
+      header img {
+        width: 56px !important;
+        height: 56px !important;
+        margin-right: 12px !important;
+      }
+      header h1 {
+        font-size: 1.2em !important;
+      }
+      #user-info {
+        margin-right: 8px !important;
+        font-size: 0.95em !important;
+      }
+      .main-action-btn {
+        min-width: 64px;
+        height: 40px;
+        font-size: 0.98em;
+        margin: 0 4px 0 0;
+        padding: 0 8px;
+      }
+      #searchInput {
+        width: 120px !important;
+        font-size: 0.95em !important;
+        padding: 6px 8px !important;
+      }
+      #statusFilter {
+        font-size: 0.95em !important;
+        padding: 6px 8px !important;
+      }
+      #requestTableContainer {
+        overflow-x: auto;
+      }
+      .dist-table th, .dist-table td {
+        padding: 2px 2px !important;
+        font-size: 0.82em !important;
+      }
+      .dist-table th {
+        min-width: 60px;
+      }
+      .dist-table td.request-item {
+        min-width: 80px !important;
+        font-size: 0.82em !important;
+      }
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="main-container">
+      <header style="display:flex;align-items:center;justify-content:space-between;padding:24px 32px 0 32px;">
+        <div style="display:flex;align-items:center;">
+          <img src="LOGO.png" alt="logo" style="width:80px;height:80px;margin-right:24px;">
+          <h1 style="font-size:2em;">物品發放管理</h1>
+        </div>
+        <div>
+          <span id="user-info" style="font-weight:bold;margin-right:16px;"></span>
+          <button onclick="logout()" style="background:#000;color:#fff;padding:8px 24px;border:none;border-radius:6px;">登出</button>
+        </div>
+      </header>
+      <section style="margin:32px 0 0 0;">
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:8px;">
+          <input type="text" id="searchInput" placeholder="搜尋..." style="padding:8px 16px;width:220px;">
+          <select id="statusFilter" style="padding:8px 16px;">
+            <option value="待處理">待處理</option>
+            <option value="已發放">已發放</option>
+          </select>
+        </div>
+        <div class="main-action-group" style="margin-bottom:16px;">
+          <button id="batchIssueBtn" class="main-action-btn batch">批量發放</button>
+          <button id="deleteBtn" class="main-action-btn delete">刪除請購單</button>
+          <button id="refreshBtn" class="main-action-btn refresh">重新整理</button>
+        </div>
+        <div id="requestTableContainer">
+          <!-- JS 產生表格 -->
+        </div>
+      </section>
+    </div>
+  </div>
+  <script src="distributor.js"></script>
+</body>
+</html>
