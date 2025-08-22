@@ -12,30 +12,34 @@
 
 // 登入
 function login() {
-  const account = document.getElementById('account').value;
+  const email = document.getElementById('account').value;
   const password = document.getElementById('password').value;
-  firebase.firestore().collection('users').doc(account).get().then(doc => {
-    if (!doc.exists) {
-      document.getElementById('login-error').innerText = '帳號不存在';
-      return;
-    }
-    const user = doc.data();
-    if (user.password !== password) {
-      document.getElementById('login-error').innerText = '密碼錯誤';
-      return;
-    }
-    localStorage.setItem('currentUser', JSON.stringify(user));
-    // 根據角色分流跳轉
-    if (user.position === 'DISTRIBUTOR') {
-      window.location.href = 'distributor.html';
-    } else if (user.position === 'EMPLOYEE') {
-      window.location.href = 'dashboard.html';
-    } else if (user.position === 'ADMIN') {
-      window.location.href = 'admin.html';
-    } else {
-      window.location.href = 'dashboard.html';
-    }
-  });
+  firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(userCredential => {
+      const user = userCredential.user;
+      // 以 uid 查 Firestore users 資料表
+      firebase.firestore().collection('users').doc(user.uid).get().then(doc => {
+        if (!doc.exists) {
+          document.getElementById('login-error').innerText = '找不到使用者資料，請聯絡管理員';
+          return;
+        }
+        const profile = doc.data();
+        localStorage.setItem('currentUser', JSON.stringify(profile));
+        // 根據角色分流跳轉
+        if (profile.position === 'DISTRIBUTOR') {
+          window.location.href = 'distributor.html';
+        } else if (profile.position === 'EMPLOYEE') {
+          window.location.href = 'dashboard.html';
+        } else if (profile.position === 'ADMIN') {
+          window.location.href = 'admin.html';
+        } else {
+          window.location.href = 'dashboard.html';
+        }
+      });
+    })
+    .catch(error => {
+      document.getElementById('login-error').innerText = '登入失敗：' + error.message;
+    });
 }
 
 // 登出
@@ -58,8 +62,6 @@ function getUserPosition(uid) {
     }
   });
 }
-
-// ...existing code...
 
 // 申請人請購單填寫
 function renderRequester() {
