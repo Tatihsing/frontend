@@ -223,7 +223,7 @@ firebase.auth().onAuthStateChanged(function(user) {
   if (user) {
     document.getElementById('login-section').style.display = 'none';
     document.getElementById('role-section').style.display = '';
-    getUserRole(user.uid);
+    getUserPosition(user.uid);
   } else {
     document.getElementById('login-section').style.display = '';
     document.getElementById('role-section').style.display = 'none';
